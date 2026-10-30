@@ -1,0 +1,9 @@
+.focus-timer-label { padding: 0 4px; }
+.focus-timer-paused { color: rgba(255,255,255,0.55); }
+.focus-timer-done { background-color: -st-accent-color; color: -st-accent-fg-color; border-radius: 99px; padding: 0 10px; }
+.focus-timer-current { font-size: 1.3em; }
+.focus-timer-bar { background-color: rgba(255,255,255,0.15); border-radius: 2px; height: 4px; width: 280px; }
+.focus-timer-bar-fill { background-color: -st-accent-color; border-radius: 2px; height: 4px; }
+.focus-timer-btn { padding: 4px 10px; border-radius: 8px; }
+.focus-timer-entry { width: 280px; }
+.focus-timer-caption { color: rgba(255,255,255,0.6); font-size: 0.85em; }

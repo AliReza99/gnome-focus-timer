@@ -1,0 +1,7 @@
+{
+  "uuid": "focus-timer@alireza",
+  "name": "Focus Timer",
+  "description": "Quick panel timer with optional title to stay focused on one task.",
+  "shell-version": ["47", "48", "49", "50"],
+  "url": ""
+}
