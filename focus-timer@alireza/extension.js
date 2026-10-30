@@ -37,10 +37,12 @@ export default class FocusTimerExtension extends Extension {
         this._label = new St.Label({text: '⏱', y_align: Clutter.ActorAlign.CENTER, style_class: 'focus-timer-label'});
         this._button.add_child(this._label);
         this._button.menu.connect('open-state-changed', (_m, open) => {
-            if (!open)
+            // Clear on close: shrinking the label mid-click moves the button and closes the menu.
+            if (!open) {
+                if (this._timer?.done)
+                    this._stop();
                 return;
-            if (this._timer?.done)
-                this._stop();
+            }
             this._buildMenu();
         });
         Main.panel.addToStatusArea(this.uuid, this._button, 0, 'right');
@@ -210,6 +212,7 @@ export default class FocusTimerExtension extends Extension {
         const presets = new St.BoxLayout({style: 'spacing: 6px; margin-top: 8px;'});
         for (const m of PRESETS)
             presets.add_child(this._btn(`${m}`, () => this._start(title.text, m)));
+        presets.add_child(this._btn('▶ Start', () => this._start(title.text, parseFloat(mins.text))));
         box.add_child(title);
         box.add_child(mins);
         box.add_child(presets);
@@ -217,8 +220,15 @@ export default class FocusTimerExtension extends Extension {
         if (this._recent.length) {
             menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             this._caption('Recent');
-            for (const r of this._recent)
-                menu.addAction(`${r.title} · ${r.minutes}m`, () => this._start(r.title, r.minutes));
+            for (const r of this._recent) {
+                const item = menu.addAction(`${r.title} · ${r.minutes}m`, () => this._start(r.title, r.minutes));
+                item.label.x_expand = true;
+                item.add_child(this._btn('✕', () => {
+                    this._recent = this._recent.filter(x => x !== r);
+                    this._save();
+                    this._buildMenu();
+                }));
+            }
         }
 
         this._tick();
