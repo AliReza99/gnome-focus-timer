@@ -44,6 +44,8 @@ export default class FocusTimerExtension extends Extension {
             this._buildMenu();
         });
         Main.panel.addToStatusArea(this.uuid, this._button, 0, 'right');
+        // An empty PopupMenu refuses to open, so populate it up front.
+        this._buildMenu();
 
         this._tickId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
             this._tick();
